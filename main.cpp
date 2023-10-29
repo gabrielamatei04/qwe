@@ -121,6 +121,7 @@ out<<"    "<<pzz.Toppings;
 out<<"    Diametru: "<<pzz.Diametru<<"\n"
    <<"    Felii: "<<pzz.Felii
    <<"}\n";
+ return out;
 }
 
 int main()
@@ -130,7 +131,10 @@ int main()
   std::cout<<"Cantitate: "<<leguma1.get_Cantitate() <<std::endl;
   Leguma leguma2("Rosie", 3);
   Leguma leguma3("Ceapa", 2);
-  std::vector<Leguma> legume={leguma1, leguma2, leguma3};
+  std::vector<Leguma> legume;
+  legume.push_back(leguma1);
+  legume.push_back(leguma2);
+  legume.push_back(leguma3);
   Topping topping1(legume, "Sos de rosii", "Feta", "NU", "NU");
   std::cout<<"Sos: "<<topping1.get_Sos() <<std::endl;
   std::cout<<"Cascaval: "<<topping1.get_Cascaval() <<std::endl;
