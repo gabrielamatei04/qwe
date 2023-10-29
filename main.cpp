@@ -8,6 +8,7 @@ class Leguma{
 
  public:
     Leguma(const std::string& nume, int cantitate): Nume(nume), Cantitate(cantitate){}
+    Leguma(const Leguma& other) : Nume(other.Nume), Cantitate(other.Cantitate) {}
 
      std::string get_Nume()const { return Nume; }
      int get_Cantitate() const { return Cantitate; }
