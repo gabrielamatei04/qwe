@@ -68,7 +68,7 @@ int Felii;
 
 public:
     Pizza(const Topping toppings, double diametru, int felii): Toppings(toppings), Diametru(diametru), Felii(felii) {}
-    //Topping get_Toppings(){return Toppings; }
+    Topping get_Toppings(){return Toppings; }
     double get_Diametru(){return Diametru; }
     int get_Felii(){return Felii; }
     double calculatePrice() {
