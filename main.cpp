@@ -106,8 +106,8 @@ return out;
 
 std::ostream& operator<<(std::ostream& out, const Topping &top){
 out<<"Topping: [";
-   for(const Leguma& leguma : top.Legume)
-    out<<leguma.get_Nume()<<", "<<leguma.get_Cantitate()<<"\n";
+   for(const Leguma& leguma : top.Legume){
+    out<<leguma.get_Nume()<<", "<<leguma.get_Cantitate()<<"\n";}
     out<<top.Sos<<"\n"<<top.Cascaval<<"\n"
        <<"Extra Cascaval: "<<top.ExtraCascaval<<"\n"
        <<"Extra Sos: "<<top.ExtraSos
