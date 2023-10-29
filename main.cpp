@@ -34,7 +34,7 @@ class Topping{
  std::string ExtraSos;
 
  public:
-     Topping(const std::vector<Leguma> legume,const std::string sos,const std::string cascaval,const std::string extracascaval,const std::string extrasos)
+     Topping(const std::vector<Leguma>& legume,const std::string sos,const std::string cascaval,const std::string extracascaval,const std::string extrasos)
     : Legume(legume), Sos(sos), Cascaval(cascaval), ExtraCascaval(extracascaval), ExtraSos(extrasos) {}
      std::vector<Leguma> get_Legume(){return Legume; }
      std::string get_Sos(){ return Sos; }
@@ -67,8 +67,8 @@ double Diametru;
 int Felii;
 
 public:
-    Pizza(Topping toppings, double diametru, int felii): Toppings(toppings), Diametru(diametru), Felii(felii) {}
-    Topping get_Toppings(){return Toppings; }
+    Pizza(const Topping toppings, double diametru, int felii): Toppings(toppings), Diametru(diametru), Felii(felii) {}
+    //Topping get_Toppings(){return Toppings; }
     double get_Diametru(){return Diametru; }
     int get_Felii(){return Felii; }
     double calculatePrice() {
