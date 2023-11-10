@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include<cstdlib>
 
 class Leguma{
  std::string Nume;
@@ -8,7 +9,7 @@ class Leguma{
 
  public:
     Leguma(const std::string& nume, int cantitate): Nume(nume), Cantitate(cantitate){}
-    Leguma(const Leguma& other) : Nume(other.Nume), Cantitate(other.Cantitate) {}
+    Leguma(const Leguma& copiere) : Nume(copiere.Nume), Cantitate(copiere.Cantitate) {}
 
      std::string get_Nume()const { return Nume; }
      int get_Cantitate() const { return Cantitate; }
@@ -42,6 +43,14 @@ class Topping{
      std::string get_ExtraCascaval(){ return ExtraCascaval; }
      std::string get_ExtraSos(){ return ExtraSos; }
 
+     void addLegume(const Leguma& leg) {
+        Legume.push_back(leg);
+    }
+
+    void addExtraToppings(const Leguma& extraTopping) {
+        addLegume(extraTopping);
+    }
+
      friend std::ostream& operator<<(std::ostream& out, const Topping &top);
 
      Topping(const Topping& copiere) : Legume(copiere.Legume), Sos(copiere.Sos), Cascaval(copiere.Cascaval), ExtraCascaval(copiere.ExtraCascaval), ExtraSos(copiere.ExtraSos){}
@@ -71,6 +80,7 @@ public:
     //Topping get_Toppings(){return Toppings; }
     double get_Diametru(){return Diametru; }
     int get_Felii(){return Felii; }
+
     double calculatePrice() {
         double basePrice = 10.0;
         double sizePrice = 0.5;
@@ -88,6 +98,16 @@ public:
         double totalPrice = basePrice + (Diametru * sizePrice) + toppingvPrice+ sosPrice + cascavalPrice;
         return totalPrice;
     }
+
+     double calculateBakingTime() {
+        double baseBakingTime = 20.0;
+        double sizeFactor = 0.5;
+        double diameter = get_Diametru();
+        double sizeTime = diameter * sizeFactor;
+        double totalBakingTime = baseBakingTime + sizeTime;
+
+        return totalBakingTime; }
+
 
     friend std::ostream& operator<<(std::ostream& out, const Pizza& pzz);
 
@@ -120,18 +140,35 @@ out<<"    Diametru: "<<pzz.Diametru<<"\n"
  return out;
 }
 
-int main()
+int main(){
 
-{ Leguma leguma1("Castravete", 9);
+    std::vector<Leguma> legume;
+    std::vector<std::string> Nume_Leguma={"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"};
+
+    for (const std::string& lgm : Nume_Leguma) {
+        legume.push_back(Leguma(lgm, rand()%10));
+    }
+
+    for (const Leguma& lgm : legume) {
+        std::cout << "Nume: " << lgm.get_Nume() << std::endl;
+        std::cout<<"Cantitate: " << lgm.get_Cantitate() << std::endl;
+    }
+
+  /*Leguma leguma1("Castravete", rand()%10);
   std::cout<<"Nume: "<<leguma1.get_Nume() <<std::endl;
   std::cout<<"Cantitate: "<<leguma1.get_Cantitate() <<std::endl;
-  Leguma leguma2("Rosie", 3);
-  Leguma leguma3("Ceapa", 2);
+  Leguma leguma2("Rosie", rand()%10);
+  Leguma leguma3("Ceapa", rand()%10);
   std::vector<Leguma> legume;
   legume.push_back(leguma1);
   legume.push_back(leguma2);
-  legume.push_back(leguma3);
+  legume.push_back(leguma3);*/
+
   Topping topping1(legume, "Sos de rosii", "Feta", "NU", "NU");
+  Leguma extraTopping("Ananas", 3);
+  topping1.addExtraToppings(extraTopping);
+  Leguma newLeguma("Mazare", 5);
+  topping1.addLegume(newLeguma);
   std::cout<<"Sos: "<<topping1.get_Sos() <<std::endl;
   std::cout<<"Cascaval: "<<topping1.get_Cascaval() <<std::endl;
   std::cout<<"ExtraCascaval: "<<topping1.get_ExtraCascaval() <<std::endl;
@@ -141,6 +178,8 @@ int main()
   std::cout<<"Felii: "<<pizza1.get_Felii() <<std::endl;
   double price=pizza1.calculatePrice();
   std::cout<<"Pret: "<< price <<std::endl;
+  double time=pizza1.calculateBakingTime();
+  std::cout<<"Timp: "<< time <<std::endl;
 
   std::cout<<pizza1;
 
