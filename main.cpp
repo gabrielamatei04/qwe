@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include<cstdlib>
+#include <memory>
 
 class Leguma{
  std::string Nume;
@@ -37,11 +38,11 @@ class Topping{
  public:
      Topping(const std::vector<Leguma>& legume,const std::string& sos,const std::string& cascaval,const std::string& extracascaval,const std::string& extrasos)
     : Legume(legume), Sos(sos), Cascaval(cascaval), ExtraCascaval(extracascaval), ExtraSos(extrasos) {}
-     std::vector<Leguma> get_Legume(){return Legume; }
+     std::vector<Leguma> get_Legume()const {return Legume; }
      std::string get_Sos(){ return Sos; }
      std::string get_Cascaval(){ return Cascaval; }
-     std::string get_ExtraCascaval(){ return ExtraCascaval; }
-     std::string get_ExtraSos(){ return ExtraSos; }
+     std::string get_ExtraCascaval()const { return ExtraCascaval; }
+     std::string get_ExtraSos()const { return ExtraSos; }
 
      void addLegume(const Leguma& leg) {
         Legume.push_back(leg);
@@ -77,9 +78,9 @@ int Felii;
 
 public:
     Pizza(const Topping& toppings, double diametru, int felii): Toppings(toppings), Diametru(diametru), Felii(felii) {}
-    //Topping get_Toppings(){return Toppings; }
-    double get_Diametru(){return Diametru; }
-    int get_Felii(){return Felii; }
+    Topping get_Toppings()const {return Toppings; }
+    double get_Diametru()const {return Diametru; }
+    int get_Felii()const {return Felii; }
 
     double calculatePrice() {
         double basePrice = 10.0;
@@ -108,9 +109,85 @@ public:
 
         return totalBakingTime; }
 
+         virtual double calculeazaCalorii() const { //caloriile le-am pus orientativ, nu sunt adevarate
+             double calorii = 40.0; //incepe de la 40 pentru ca deja am adaugat pentru cascaval si sos
+        for (const Leguma& leguma : Toppings.get_Legume()) {
+            calorii += 10.0 * leguma.get_Cantitate();
+        }
+        calorii += 0.1 * get_Diametru();
+       if(Toppings.get_ExtraCascaval()=="DA") calorii+=20.0;
+       if(Toppings.get_ExtraSos()=="DA") calorii+=20.0;
+        return calorii;
+         }
 
     friend std::ostream& operator<<(std::ostream& out, const Pizza& pzz);
 
+};
+
+
+class Pizza_Nevegetariana : public Pizza {
+std::string Salam;
+
+public:
+    Pizza_Nevegetariana(const std::string& salam, const Topping& toppings, double diametru, int felii)
+        : Pizza(toppings, diametru, felii), Salam(salam) {}
+    std::string get_Salam() const { return Salam; }
+    double calculatePrice() {
+        return Pizza::calculatePrice() + 10.0;
+    }
+
+    double calculeazaCalorii() const override {
+     return Pizza::calculeazaCalorii() + 200;
+    }
+    friend std::ostream& operator<<(std::ostream& out, const Pizza_Nevegetariana& pzznv);
+
+};
+
+class Meniu {
+public:
+    virtual void afiseazaMeniu() const = 0;
+    virtual ~Meniu() {}
+};
+
+class Margherita : public Meniu {
+std::string Cascaval;
+std::string Sos;
+std::string Leguma;
+public:
+    Margherita(std::string cascaval="Mozzarela", std::string sos="Sos de rosii", std::string leguma="Busuioc") : Cascaval(cascaval), Sos(sos), Leguma(leguma) {}
+    std::string get_Cascaval() {return Cascaval;}
+    std::string get_Sos() {return Sos;}
+    std::string get_Leguma() {return Leguma;}
+    void afiseazaMeniu() const override {
+        std::cout << "Pizza Margherita\n";
+        std::cout << "Ingrediente: Mozzarela, Sos de rosii, Busuioc\n";
+        std::cout << "Pret: 25.0\n";
+    }
+
+};
+
+class QuattroStagioni : public Meniu {
+    std::string Cascaval = "Mozzarella";
+    std::string Sos = "Sos de rosii";
+    std::string Leguma1 = "Ciuperci";
+    std::string Leguma2 = "Sunca";
+    std::string Leguma3 = "Masline";
+    std::string Leguma4 = "Ardei";
+
+public:
+    QuattroStagioni( std::string cascaval="Mozzarella",  std::string sos="Sos de rosii",  std::string leguma1="Ciuperci",  std::string leguma2="Sunca",  std::string leguma3 ="Masline",  std::string leguma4="Ardei"): Cascaval(cascaval), Sos(sos), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
+
+    std::string get_Cascaval() { return Cascaval;}
+    std::string get_Sos() {return Sos;}
+    std::string get_Leguma1(){return Leguma1;}
+    std::string get_Leguma2(){return Leguma2;}
+    std::string get_Leguma3(){return Leguma3;}
+    std::string get_Leguma4(){return Leguma4;}
+    void afiseazaMeniu() const override {
+        std::cout << "Pizza Quattro Stagioni \n";
+        std::cout << "Ingrediente: Mozzarela, Sos de rosii, Ciuperci, Sunca, Masline, Ardei\n";
+        std::cout << "Pret: 30.0\n";
+    }
 };
 
 std::ostream& operator<<(std::ostream& out, const Leguma& leg){
@@ -140,6 +217,16 @@ out<<"    Diametru: "<<pzz.Diametru<<"\n"
  return out;
 }
 
+std::ostream& operator<<(std::ostream& out, const Pizza_Nevegetariana& pzznv){
+out<<"    Pizza Nevegetariana: {"<<"\n";
+out<<"    "<<pzznv.get_Toppings();
+out<<"    Salam: "<<pzznv.Salam<<"\n"
+   <<"    Diametru: "<<pzznv.get_Diametru()<<"\n"
+   <<"    Felii: "<<pzznv.get_Felii()
+   <<"}\n";
+ return out;
+}
+
 int main(){
 
     std::vector<Leguma> legume;
@@ -149,7 +236,7 @@ int main(){
         legume.push_back(Leguma(lgm, rand()%10));
     }
 
-    for (const Leguma& lgm : legume) {
+   /* for (const Leguma& lgm : legume) {
         std::cout << "Nume: " << lgm.get_Nume() << std::endl;
         std::cout<<"Cantitate: " << lgm.get_Cantitate() << std::endl;
     }
@@ -169,19 +256,59 @@ int main(){
   topping1.addExtraToppings(extraTopping);
   Leguma newLeguma("Mazare", 5);
   topping1.addLegume(newLeguma);
-  std::cout<<"Sos: "<<topping1.get_Sos() <<std::endl;
-  std::cout<<"Cascaval: "<<topping1.get_Cascaval() <<std::endl;
-  std::cout<<"ExtraCascaval: "<<topping1.get_ExtraCascaval() <<std::endl;
-  std::cout<<"ExtraSos: "<<topping1.get_ExtraSos() <<std::endl;
+  //std::cout<<"Sos: "<<topping1.get_Sos() <<std::endl;
+  //std::cout<<"Cascaval: "<<topping1.get_Cascaval() <<std::endl;
+  //std::cout<<"ExtraCascaval: "<<topping1.get_ExtraCascaval() <<std::endl;
+  //std::cout<<"ExtraSos: "<<topping1.get_ExtraSos() <<std::endl;
   Pizza pizza1(topping1, 20, 8);
-  std::cout<<"Diametru: "<<pizza1.get_Diametru() <<std::endl;
-  std::cout<<"Felii: "<<pizza1.get_Felii() <<std::endl;
-  double price=pizza1.calculatePrice();
-  std::cout<<"Pret: "<< price <<std::endl;
-  double time=pizza1.calculateBakingTime();
-  std::cout<<"Timp: "<< time <<std::endl;
-
+  //std::cout<<"Diametru: "<<pizza1.get_Diametru() <<std::endl;
+  //std::cout<<"Felii: "<<pizza1.get_Felii() <<std::endl;
+  std::cout<<"Pizza1"<<std::endl;
   std::cout<<pizza1;
+  double calorii1=pizza1.calculeazaCalorii();
+  std::cout<<"Calorii: "<<calorii1<<std::endl;
+  double price1=pizza1.calculatePrice();
+  std::cout<<"Pret: "<< price1 <<std::endl;
+  double time1=pizza1.calculateBakingTime();
+  std::cout<<"Timp: "<< time1 <<std::endl;
+
+
+  std::cout<<"-------------------------------------------------------------"<<std::endl;
+
+   std::vector<Leguma> legume_pnv;
+   std::vector<std::string> Nume_Leguma_Nv={"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"};
+
+   for (const std::string& lgm : Nume_Leguma_Nv) {
+        legume_pnv.push_back(Leguma(lgm, rand()%10));
+    }
+
+    /*for (const Leguma& lgm : legume) {
+        std::cout << "Nume: " << lgm.get_Nume() << std::endl;
+        std::cout<<"Cantitate: " << lgm.get_Cantitate() << std::endl;
+    }*/
+
+    Topping topping2 (legume_pnv, "Sos de rosii", "Parmezan", "DA", "NU");
+  //std::cout<<"Sos: "<<topping2.get_Sos() <<std::endl;
+  //std::cout<<"Cascaval: "<<topping2.get_Cascaval() <<std::endl;
+  //std::cout<<"ExtraCascaval: "<<topping2.get_ExtraCascaval() <<std::endl;
+  //std::cout<<"ExtraSos: "<<topping2.get_ExtraSos() <<std::endl;
+  Pizza_Nevegetariana pizza2("Sunca",topping2, 15, 4);
+  //std::cout<<"Salam: "<<pizza2.get_Salam()<<std::endl;
+  //std::cout<<"Diametru: "<<pizza2.get_Diametru() <<std::endl;
+  //std::cout<<"Felii: "<<pizza2.get_Felii() <<std::endl;
+  std::cout<<"Pizza2(nevegetariana)"<<std::endl;
+  std::cout<<pizza2;
+  double calorii2=pizza2.calculeazaCalorii();
+  std::cout<<"Calorii: "<<calorii2<<std::endl;
+  double price2=pizza2.calculatePrice();
+  std::cout<<"Pret: "<< price2 <<std::endl;
+  double time2=pizza2.calculateBakingTime();
+  std::cout<<"Timp: "<< time2 <<std::endl;
+  Meniu* optiunea1=new Margherita();
+  optiunea1->afiseazaMeniu();
+  Meniu* optiunea2=new QuattroStagioni();
+  optiunea2->afiseazaMeniu();
 
     return 0;
 }
+
