@@ -241,7 +241,7 @@ int main(){
         std::cout<<"Cantitate: " << lgm.get_Cantitate() << std::endl;
     }
 
-  /*Leguma leguma1("Castravete", rand()%10);
+  Leguma leguma1("Castravete", rand()%10);
   std::cout<<"Nume: "<<leguma1.get_Nume() <<std::endl;
   std::cout<<"Cantitate: "<<leguma1.get_Cantitate() <<std::endl;
   Leguma leguma2("Rosie", rand()%10);
