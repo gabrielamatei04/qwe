@@ -39,8 +39,8 @@ class Topping{
      Topping(const std::vector<Leguma>& legume,const std::string& sos,const std::string& cascaval,const std::string& extracascaval,const std::string& extrasos)
     : Legume(legume), Sos(sos), Cascaval(cascaval), ExtraCascaval(extracascaval), ExtraSos(extrasos) {}
      std::vector<Leguma> get_Legume()const {return Legume; }
-     std::string get_Sos(){ return Sos; }
-     std::string get_Cascaval(){ return Cascaval; }
+     //std::string get_Sos(){ return Sos; }
+     //std::string get_Cascaval(){ return Cascaval; }
      std::string get_ExtraCascaval()const { return ExtraCascaval; }
      std::string get_ExtraSos()const { return ExtraSos; }
 
