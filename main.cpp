@@ -306,8 +306,10 @@ int main(){
   std::cout<<"Timp: "<< time2 <<std::endl;
   Meniu* optiunea1=new Margherita();
   optiunea1->afiseazaMeniu();
+  delete optiunea1;
   Meniu* optiunea2=new QuattroStagioni();
   optiunea2->afiseazaMeniu();
+  delete optiunea2;
 
     return 0;
 }
