@@ -154,7 +154,7 @@ std::string Cascaval;
 std::string Sos;
 std::string Leguma;
 public:
-    Margherita(const std::string cascaval="Mozzarela",const std::string sos="Sos de rosii",const std::string leguma="Busuioc") : Cascaval(cascaval), Sos(sos), Leguma(leguma) {}
+    Margherita(const std::string& cascaval="Mozzarela",const std::string& sos="Sos de rosii",const std::string& leguma="Busuioc") : Cascaval(cascaval), Sos(sos), Leguma(leguma) {}
    // std::string get_Cascaval() {return Cascaval;}
    // std::string get_Sos() {return Sos;}
    // std::string get_Leguma() {return Leguma;}
@@ -175,7 +175,7 @@ class QuattroStagioni : public Meniu {
     std::string Leguma4 = "Ardei";
 
 public:
-    QuattroStagioni(const std::string cascaval="Mozzarella",const  std::string sos="Sos de rosii",const  std::string leguma1="Ciuperci",const  std::string leguma2="Sunca",const  std::string leguma3 ="Masline",const std::string leguma4="Ardei"): Cascaval(cascaval), Sos(sos), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
+    QuattroStagioni(const std::string& cascaval="Mozzarella",const  std::string& sos="Sos de rosii",const  std::string& leguma1="Ciuperci",const  std::string& leguma2="Sunca",const  std::string& leguma3 ="Masline",const std::string& leguma4="Ardei"): Cascaval(cascaval), Sos(sos), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
 
     //std::string get_Cascaval() { return Cascaval;}
     //std::string get_Sos() {return Sos;}
