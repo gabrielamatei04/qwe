@@ -131,7 +131,7 @@ std::string Salam;
 public:
     Pizza_Nevegetariana(const std::string& salam, const Topping& toppings, double diametru, int felii)
         : Pizza(toppings, diametru, felii), Salam(salam) {}
-    std::string get_Salam() const { return Salam; }
+    //std::string get_Salam() const { return Salam; }
     double calculatePrice() {
         return Pizza::calculatePrice() + 10.0;
     }
@@ -154,10 +154,10 @@ std::string Cascaval;
 std::string Sos;
 std::string Leguma;
 public:
-    Margherita(std::string cascaval="Mozzarela", std::string sos="Sos de rosii", std::string leguma="Busuioc") : Cascaval(cascaval), Sos(sos), Leguma(leguma) {}
-    std::string get_Cascaval() {return Cascaval;}
-    std::string get_Sos() {return Sos;}
-    std::string get_Leguma() {return Leguma;}
+    Margherita(const std::string cascaval="Mozzarela",const std::string sos="Sos de rosii",const std::string leguma="Busuioc") : Cascaval(cascaval), Sos(sos), Leguma(leguma) {}
+   // std::string get_Cascaval() {return Cascaval;}
+   // std::string get_Sos() {return Sos;}
+   // std::string get_Leguma() {return Leguma;}
     void afiseazaMeniu() const override {
         std::cout << "Pizza Margherita\n";
         std::cout << "Ingrediente: Mozzarela, Sos de rosii, Busuioc\n";
@@ -175,14 +175,14 @@ class QuattroStagioni : public Meniu {
     std::string Leguma4 = "Ardei";
 
 public:
-    QuattroStagioni( std::string cascaval="Mozzarella",  std::string sos="Sos de rosii",  std::string leguma1="Ciuperci",  std::string leguma2="Sunca",  std::string leguma3 ="Masline",  std::string leguma4="Ardei"): Cascaval(cascaval), Sos(sos), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
+    QuattroStagioni(const std::string cascaval="Mozzarella",const  std::string sos="Sos de rosii",const  std::string leguma1="Ciuperci",const  std::string leguma2="Sunca",const  std::string leguma3 ="Masline",const std::string leguma4="Ardei"): Cascaval(cascaval), Sos(sos), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
 
-    std::string get_Cascaval() { return Cascaval;}
-    std::string get_Sos() {return Sos;}
-    std::string get_Leguma1(){return Leguma1;}
-    std::string get_Leguma2(){return Leguma2;}
-    std::string get_Leguma3(){return Leguma3;}
-    std::string get_Leguma4(){return Leguma4;}
+    //std::string get_Cascaval() { return Cascaval;}
+    //std::string get_Sos() {return Sos;}
+    //std::string get_Leguma1(){return Leguma1;}
+    //std::string get_Leguma2(){return Leguma2;}
+    //std::string get_Leguma3(){return Leguma3;}
+    //std::string get_Leguma4(){return Leguma4;}
     void afiseazaMeniu() const override {
         std::cout << "Pizza Quattro Stagioni \n";
         std::cout << "Ingrediente: Mozzarela, Sos de rosii, Ciuperci, Sunca, Masline, Ardei\n";
