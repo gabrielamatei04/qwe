@@ -199,7 +199,7 @@ std::string Leguma;
 
 public:
 
-    Hawaii(const std::string& sos="Sos de rosii", const std::string& cascaval="Mpzzarella", const std::string& salam="Sunca", std::string leguma="Ananas" ) : Sos(sos), Cascaval(cascaval), Salam(salam), Leguma(leguma){}
+    Hawaii(const std::string& sos="Sos de rosii", const std::string& cascaval="Mpzzarella", const std::string& salam="Sunca",const std::string& leguma="Ananas" ) : Sos(sos), Cascaval(cascaval), Salam(salam), Leguma(leguma){}
      //std::string get_Sos() {return Sos;}
     //std::string get_Cascaval() { return Cascaval;}
      //std::string get_Salam() {return Salam;}
