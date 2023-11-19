@@ -4,6 +4,7 @@
 #include<cstdlib>
 #include <memory>
 
+
 class Leguma{
  std::string Nume;
  int Cantitate;
@@ -190,6 +191,27 @@ public:
     }
 };
 
+class Hawaii: public Meniu{
+std::string Sos;
+std::string Cascaval;
+std::string Salam;
+std::string Leguma;
+
+public:
+
+    Hawaii(const std::string& sos="Sos de rosii", const std::string& cascaval="Mpzzarella", const std::string& salam="Sunca", std::string leguma="Ananas" ) : Sos(sos), Cascaval(cascaval), Salam(salam), Leguma(leguma){}
+     //std::string get_Sos() {return Sos;}
+    //std::string get_Cascaval() { return Cascaval;}
+     //std::string get_Salam() {return Salam;}
+    //std::string get_Leguma(){return Leguma;}
+    void afiseazaMeniu() const override {
+        std::cout << "Pizza Hawaii \n";
+        std::cout << "Ingrediente: Mozzarela, Sos de rosii, Sunca, Ananas\n";
+        std::cout << "Pret: 27.5\n";
+    }
+
+};
+
 std::ostream& operator<<(std::ostream& out, const Leguma& leg){
 out << "Leguma: {"
     << leg.Nume << " " << leg.Cantitate
@@ -310,6 +332,10 @@ int main(){
   Meniu* optiunea2=new QuattroStagioni();
   optiunea2->afiseazaMeniu();
   delete optiunea2;
+  Meniu* optiunea3=new Hawaii();
+  optiunea3->afiseazaMeniu();
+  delete optiunea3;
+
 
     return 0;
 }
