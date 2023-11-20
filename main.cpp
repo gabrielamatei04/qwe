@@ -144,22 +144,21 @@ public:
 
 };
 
-class Meniu {
+class Pizza_Facuta {
+std::string Sos;
+std::string Cascaval;
 public:
-    virtual void afiseazaMeniu() const = 0;
-    virtual ~Meniu() {}
+    Pizza_Facuta(const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella") : Sos(sos), Cascaval(cascaval) {}
+    virtual void afiseazaPizza() const = 0;
+    virtual ~Pizza_Facuta() {}
 };
 
-class Margherita : public Meniu {
-std::string Cascaval;
-std::string Sos;
+class Margherita : public Pizza_Facuta {
 std::string Leguma;
 public:
-    Margherita(const std::string& cascaval="Mozzarela",const std::string& sos="Sos de rosii",const std::string& leguma="Busuioc") : Cascaval(cascaval), Sos(sos), Leguma(leguma) {}
-   // std::string get_Cascaval() {return Cascaval;}
-   // std::string get_Sos() {return Sos;}
+    Margherita(const std::string& leguma="Busuioc", const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella") : Pizza_Facuta(sos, cascaval), Leguma(leguma) {}
    // std::string get_Leguma() {return Leguma;}
-    void afiseazaMeniu() const override {
+    void afiseazaPizza() const override {
         std::cout << "Pizza Margherita\n";
         std::cout << "Ingrediente: Mozzarela, Sos de rosii, Busuioc\n";
         std::cout << "Pret: 25.0\n";
@@ -167,44 +166,36 @@ public:
 
 };
 
-class QuattroStagioni : public Meniu {
-    std::string Cascaval = "Mozzarella";
-    std::string Sos = "Sos de rosii";
-    std::string Leguma1 = "Ciuperci";
-    std::string Leguma2 = "Sunca";
-    std::string Leguma3 = "Masline";
-    std::string Leguma4 = "Ardei";
+class QuattroStagioni : public Pizza_Facuta {
+    std::string Leguma1;
+    std::string Leguma2;
+    std::string Leguma3;
+    std::string Leguma4;
 
 public:
-    QuattroStagioni(const std::string& cascaval="Mozzarella",const  std::string& sos="Sos de rosii",const  std::string& leguma1="Ciuperci",const  std::string& leguma2="Sunca",const  std::string& leguma3 ="Masline",const std::string& leguma4="Ardei"): Cascaval(cascaval), Sos(sos), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
+    QuattroStagioni(const  std::string& leguma1="Ciuperci",const  std::string& leguma2="Sunca",const  std::string& leguma3 ="Masline",const std::string& leguma4="Ardei",const  std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella"): Pizza_Facuta(sos, cascaval) , Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
 
-    //std::string get_Cascaval() { return Cascaval;}
-    //std::string get_Sos() {return Sos;}
     //std::string get_Leguma1(){return Leguma1;}
     //std::string get_Leguma2(){return Leguma2;}
     //std::string get_Leguma3(){return Leguma3;}
     //std::string get_Leguma4(){return Leguma4;}
-    void afiseazaMeniu() const override {
+    void afiseazaPizza() const override {
         std::cout << "Pizza Quattro Stagioni \n";
         std::cout << "Ingrediente: Mozzarela, Sos de rosii, Ciuperci, Sunca, Masline, Ardei\n";
         std::cout << "Pret: 30.0\n";
     }
 };
 
-class Hawaii: public Meniu{
-std::string Sos;
-std::string Cascaval;
+class Hawaii: public Pizza_Facuta{
 std::string Salam;
 std::string Leguma;
 
 public:
 
-    Hawaii(const std::string& sos="Sos de rosii", const std::string& cascaval="Mpzzarella", const std::string& salam="Sunca",const std::string& leguma="Ananas" ) : Sos(sos), Cascaval(cascaval), Salam(salam), Leguma(leguma){}
-     //std::string get_Sos() {return Sos;}
-    //std::string get_Cascaval() { return Cascaval;}
+    Hawaii(const std::string& salam="Sunca", std::string leguma="Ananas",const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella" ) : Pizza_Facuta(sos, cascaval), Salam(salam), Leguma(leguma){}
      //std::string get_Salam() {return Salam;}
     //std::string get_Leguma(){return Leguma;}
-    void afiseazaMeniu() const override {
+    void afiseazaPizza() const override {
         std::cout << "Pizza Hawaii \n";
         std::cout << "Ingrediente: Mozzarela, Sos de rosii, Sunca, Ananas\n";
         std::cout << "Pret: 27.5\n";
@@ -326,17 +317,16 @@ int main(){
   std::cout<<"Pret: "<< price2 <<std::endl;
   double time2=pizza2.calculateBakingTime();
   std::cout<<"Timp: "<< time2 <<std::endl;
-  Meniu* optiunea1=new Margherita();
-  optiunea1->afiseazaMeniu();
+  Pizza_Facuta* optiunea1=new Margherita();
+  optiunea1->afiseazaPizza();
   delete optiunea1;
-  Meniu* optiunea2=new QuattroStagioni();
-  optiunea2->afiseazaMeniu();
+  Pizza_Facuta* optiunea2=new QuattroStagioni();
+  optiunea2->afiseazaPizza();
   delete optiunea2;
-  Meniu* optiunea3=new Hawaii();
-  optiunea3->afiseazaMeniu();
+  Pizza_Facuta* optiunea3=new Hawaii();
+  optiunea3->afiseazaPizza();
   delete optiunea3;
 
 
     return 0;
 }
-
