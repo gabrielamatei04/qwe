@@ -192,7 +192,7 @@ std::string Leguma;
 
 public:
 
-    Hawaii(const std::string& salam="Sunca", std::string leguma="Ananas",const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella" ) : Pizza_Facuta(sos, cascaval), Salam(salam), Leguma(leguma){}
+    Hawaii(const std::string& salam="Sunca", const std::string& leguma="Ananas",const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella" ) : Pizza_Facuta(sos, cascaval), Salam(salam), Leguma(leguma){}
      //std::string get_Salam() {return Salam;}
     //std::string get_Leguma(){return Leguma;}
     void afiseazaPizza() const override {
