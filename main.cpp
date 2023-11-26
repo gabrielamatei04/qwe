@@ -435,7 +435,7 @@ int main()
     inventar.adaugaIngredient("Ananas", 12);
 
     std::vector<Leguma> legume;
-   for (const std::string& lgm : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
+   for (const std::string lgm : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
     int cantitate = rand() % 10;
     legume.push_back(Leguma(lgm, cantitate));
 }
@@ -470,7 +470,7 @@ int main()
 
 
     std::vector<Leguma> legume_pnv;
-   for (const std::string& lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
+   for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
     int cantitate = rand() % 10;
     legume_pnv.push_back(Leguma(lgm_pnv, cantitate));
 }
