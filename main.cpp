@@ -71,10 +71,10 @@ public:
         Legume.push_back(leg);
     }
 
-   /* void addExtraToppings(const Leguma& extraTopping)
+    void addExtraToppings(const Leguma& extraTopping)
     {
         addLegume(extraTopping);
-    }*/
+    }
 
     friend std::ostream& operator<<(std::ostream& out, const Topping &top);
 
@@ -457,6 +457,9 @@ int main()
 
     Topping topping1(legume, "Sos de rosii", "Feta", "NU", "NU");
     Leguma extraTopping("Ananas", 3);
+    topping1.addExtraToppings(extraTopping);
+    Leguma newLeguma("Mazare", 5);
+    topping1.addLegume(newLeguma);
     //std::cout<<"Sos: "<<topping1.get_Sos() <<std::endl;
     //std::cout<<"Cascaval: "<<topping1.get_Cascaval() <<std::endl;
     //std::cout<<"ExtraCascaval: "<<topping1.get_ExtraCascaval() <<std::endl;
