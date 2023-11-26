@@ -375,7 +375,6 @@ std::ostream& operator<<(std::ostream& out, const Pizza_Nevegetariana& pzznv)
 void adaugaIngredientInInventar(InventarPizza& inventar)
 {
     std::string nume;
-    int cantitate;
 
     std::cout << "Introdu numele ingredientului: ";
     std::cin >> nume;
@@ -383,7 +382,7 @@ void adaugaIngredientInInventar(InventarPizza& inventar)
     auto it = inventar.cautaIngredient(nume);
 
     if (it == inventar.getInventar().end())
-    {
+    {   int cantitate;
         std::cout << "Introdu cantitatea disponibila: ";
         std::cin >> cantitate;
 
@@ -398,7 +397,6 @@ void adaugaIngredientInInventar(InventarPizza& inventar)
 void actualizeazaStocIngredient(InventarPizza& inventar)
 {
     std::string nume;
-    int cantitate;
 
     std::cout << "Introdu numele ingredientului pentru actualizare: ";
     std::cin >> nume;
@@ -406,7 +404,7 @@ void actualizeazaStocIngredient(InventarPizza& inventar)
     auto it = inventar.cautaIngredient(nume);
 
     if (it != inventar.getInventar().end())
-    {
+    {   int cantitate;
         std::cout << "Introdu noua cantitate disponibila: ";
         std::cin >> cantitate;
 
