@@ -590,6 +590,7 @@ int main()
             inventar.actualizeazaStocul(legume);
             inventar.afiseazaStocul();
             auto& inventarMap = inventar.getInventar();
+            (void)inventarMap;
             std::cout<<"-------------------------------------------------------------"<<std::endl;
             if (inventar.areSuficienteIngrediente(legume_pnv))
             {
