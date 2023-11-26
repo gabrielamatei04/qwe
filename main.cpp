@@ -242,7 +242,7 @@ class Hawaii: public Pizza_Facuta
 
 public:
 
-    Hawaii(const std::string& salam="Sunca", const std::string leguma="Ananas",const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella" ) : Pizza_Facuta(sos, cascaval), Salam(salam), Leguma(leguma) {}
+    Hawaii(const std::string& salam="Sunca", const std::string& leguma="Ananas",const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella" ) : Pizza_Facuta(sos, cascaval), Salam(salam), Leguma(leguma) {}
     //std::string get_Salam() {return Salam;}
     //std::string get_Leguma(){return Leguma;}
     void afiseazaPizza() const override
@@ -435,9 +435,9 @@ int main()
     inventar.adaugaIngredient("Ananas", 12);
 
     std::vector<Leguma> legume;
-    for (const std::string& lgm : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"})
-{
-    legume.push_back(Leguma(lgm, rand() % 10));
+   for (const std::string& lgm : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
+    int cantitate = rand() % 10;
+    legume.push_back(Leguma(lgm, cantitate));
 }
 
     /* for (const Leguma& lgm : legume) {
