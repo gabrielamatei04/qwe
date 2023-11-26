@@ -492,7 +492,7 @@ int main()
 
 
 
-    int optiune;
+    int optiune=-1;
 
     do
     {
@@ -505,6 +505,7 @@ int main()
         std::cout << "---------------------------\n";
         std::cout << "Alege o optiune: ";
         std::cin >> optiune;
+    
 
         switch (optiune)
         {
