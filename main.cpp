@@ -470,12 +470,10 @@ int main()
 
 
     std::vector<Leguma> legume_pnv;
-    std::vector<std::string> Nume_Leguma_Nv= {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"};
-
-    for (const std::string& lgm : Nume_Leguma_Nv)
-    {
-        legume_pnv.push_back(Leguma(lgm, rand()%10));
-    }
+   for (const std::string& lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
+    int cantitate = rand() % 10;
+    legume_pnv.push_back(Leguma(lgm_pnv, cantitate));
+}
 
     /*for (const Leguma& lgm : legume) {
         std::cout << "Nume: " << lgm.get_Nume() << std::endl;
