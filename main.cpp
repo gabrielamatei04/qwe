@@ -500,6 +500,7 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
         std::cout << "2. Actualizeaza stocul pentru un ingredient\n";
         std::cout << "3. Comanda pizza facuta\n";
         std::cout << "4. Creeaza o pizza.\n";
+        std::cout << "5. Afiseaza stocul.\n";
         std::cout << "0. Iesire\n";
         std::cout << "---------------------------\n";
         std::cout << "Alege o optiune: ";
@@ -615,6 +616,9 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
             break;
 
         }
+         case 5: 
+              inventar.afiseazaStocul();
+            break:
         case 0:
             std::cout << "Programul se inchide.\n";
             break;
