@@ -618,7 +618,7 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
         }
          case 5: 
               inventar.afiseazaStocul();
-            break:
+            break;
         case 0:
             std::cout << "Programul se inchide.\n";
             break;
