@@ -1,3 +1,4 @@
+
  #include <iostream>
 #include <vector>
 #include <string>
@@ -313,7 +314,7 @@ public:
         }
     }
 
-    /*void actualizeazaStocul(const std::vector<Leguma>& ingrediente)
+    void actualizeazaStocul(const std::vector<Leguma>& ingrediente)
     {
         for (const Leguma& leguma : ingrediente)
         {
@@ -324,7 +325,7 @@ public:
                 it->second.actualizeazaStoc(-leguma.get_Cantitate());
             }
         }
-    }*/
+    }
 
 };
 
@@ -393,7 +394,7 @@ void adaugaIngredientInInventar(InventarPizza& inventar)
         std::cout << "Ingredientul se afla deja in inventar.\n";
     }
 }
-/*void actualizeazaStocIngredient(InventarPizza& inventar)
+void actualizeazaStocIngredient(InventarPizza& inventar)
 {
     std::string nume;
 
@@ -415,7 +416,6 @@ void adaugaIngredientInInventar(InventarPizza& inventar)
         std::cout << "Ingredientul nu a fost gasit in inventar.\n";
     }
 }
-*/
 
 
 
@@ -496,7 +496,7 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
     do
     {
         std::cout << "---------------------------\n";
-       // std::cout << "1. Adauga ingredient in inventar\n";
+        std::cout << "1. Adauga ingredient in inventar\n";
         std::cout << "2. Actualizeaza stocul pentru un ingredient\n";
         std::cout << "3. Comanda pizza facuta\n";
         std::cout << "4. Creeaza o pizza.\n";
@@ -511,10 +511,10 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
         case 1:
             adaugaIngredientInInventar(inventar);
             break;
-       // case 2:
-         //   actualizeazaStocIngredient(inventar);
-          //  break;
         case 2:
+            actualizeazaStocIngredient(inventar);
+            break;
+        case 3:
         {
             int optiunePizza;
             std::cout << "---------------------------\n";
@@ -567,7 +567,7 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
 
 
 
-        case 3:
+        case 4:
         {
             if (inventar.areSuficienteIngrediente(legume))
             {
@@ -587,7 +587,7 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
             std::cout<<"Pret: "<< price1 <<std::endl;
             double time1=pizza1.calculateBakingTime();
             std::cout<<"Timp: "<< time1 <<std::endl;
-//            inventar.actualizeazaStocul(legume);
+            inventar.actualizeazaStocul(legume);
             inventar.afiseazaStocul();
             auto& inventarMap = inventar.getInventar();
             (void)inventarMap;
@@ -610,7 +610,7 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
             std::cout<<"Pret: "<< price2 <<std::endl;
             double time2=pizza2.calculateBakingTime();
             std::cout<<"Timp: "<< time2 <<std::endl;
-           // inventar.actualizeazaStocul(legume_pnv);
+            inventar.actualizeazaStocul(legume_pnv);
             inventar.afiseazaStocul();
             break;
 
