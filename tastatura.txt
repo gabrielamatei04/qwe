@@ -1,5 +1,5 @@
-std::cin >> nume;
-std::cin >> cantitate;
-std::cin >> nume;
-std::cin >> cantitate;
-std::cin >> optiunePizza;
+Ananas
+4
+Cirese
+7
+1
