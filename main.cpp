@@ -347,10 +347,6 @@ class InventarPizza
     std::map<std::string, Ingredient> Inventar;
 
 public:
-     std::map<std::string, Ingredient>& accesInventar()
-    {
-        return Inventar;
-    }
     const std::map<std::string, Ingredient>& getInventar() const
     {
         return Inventar;
