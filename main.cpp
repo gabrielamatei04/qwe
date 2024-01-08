@@ -537,7 +537,7 @@ int main()
             })
     {
         int cantitate = rand() % 10;
-        bool isValid = Leguma::isValidQuantity(10);
+        Leguma::isValidQuantity(10);
         legume.push_back(Leguma(lgm, cantitate));
         Leguma::NumarTotalLegume++;
     }
