@@ -1,11 +1,29 @@
 
- #include <iostream>
+#include <iostream>
 #include <vector>
 #include <string>
 #include<cstdlib>
 #include <memory>
 #include<map>
+#include <stdexcept>
 
+class CantitateNegativaException : public std::exception
+{
+public:
+    const char* what() const noexcept override
+    {
+        return "Cantitatea nu poate fi negativa.";
+    }
+};
+
+class IngredientExistentException : public std::exception
+{
+public:
+    const char* what() const noexcept override
+    {
+        return "Ingredientul exista deja in inventar.";
+    }
+};
 
 class Leguma
 {
@@ -13,7 +31,14 @@ class Leguma
     int Cantitate;
 
 public:
-    Leguma(const std::string& nume, int cantitate): Nume(nume), Cantitate(cantitate) {}
+
+    Leguma(const std::string& nume, int cantitate) : Nume(nume), Cantitate(cantitate)
+    {
+        if (!isValidQuantity(cantitate))
+        {
+            throw std::invalid_argument("Cantitatea trebuie sa fie pozitiva.");
+        }
+    }
     Leguma(const Leguma& copiere) : Nume(copiere.Nume), Cantitate(copiere.Cantitate) {}
 
     std::string get_Nume()const
@@ -37,9 +62,19 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& out, const Leguma& leg);
+    static bool isValidQuantity(int cantitate)
+    {
+        return cantitate >= 0;
+    }
 
+    static void afiseazaInfoStatic()
+    {
+        std::cout << "Aceasta este o metoda statica pentru clasa Leguma.\n";
+    }
+
+    static int NumarTotalLegume;
 };
-
+int Leguma::NumarTotalLegume = 0;
 class Topping
 {
     std::vector<Leguma> Legume;
@@ -190,27 +225,43 @@ public:
 
 class Pizza_Facuta
 {
+protected:
     std::string Sos;
     std::string Cascaval;
+    double Diametru;
+
 public:
-    Pizza_Facuta(const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella") : Sos(sos), Cascaval(cascaval) {}
+    Pizza_Facuta(const std::string& sos, const std::string& cascaval, const double diametru)
+        : Sos(sos), Cascaval(cascaval), Diametru(diametru) {}
+
     virtual void afiseazaPizza() const = 0;
+    virtual double calculeazaPret() const = 0;
     virtual ~Pizza_Facuta() {}
 };
 
 class Margherita : public Pizza_Facuta
 {
-    std::string Leguma;
+    std::string Busuioc;
+
 public:
-    Margherita(const std::string& leguma="Busuioc", const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella") : Pizza_Facuta(sos, cascaval), Leguma(leguma) {}
-    // std::string get_Leguma() {return Leguma;}
+    Margherita(const std::string& busuioc = " BusuiocProaspat", const std::string& sos = "Sos de rosii", const std::string& cascaval = "Mozzarella",const double diametru=30.0)
+        : Pizza_Facuta(sos, cascaval, diametru), Busuioc(busuioc) {}
+
     void afiseazaPizza() const override
     {
         std::cout << "Pizza Margherita\n";
-        std::cout << "Ingrediente: Mozzarela, Sos de rosii, Busuioc\n";
-        std::cout << "Pret: 25.0\n";
+        std::cout << "Ingrediente:"<<  Sos << ", " << Cascaval << ", " << Busuioc << "\n";
+        std::cout << "Diametru: " << Diametru << " cm\n";
+        std::cout << "Pret: " << calculeazaPret() << "\n";
     }
 
+    double calculeazaPret() const override
+    {
+        double basePrice = (15.0*Diametru)/12;
+        double busuiocPrice = (Busuioc == "Proaspat") ? 5.0 : 0.0;
+
+        return basePrice + busuiocPrice;
+    }
 };
 
 class QuattroStagioni : public Pizza_Facuta
@@ -221,38 +272,53 @@ class QuattroStagioni : public Pizza_Facuta
     std::string Leguma4;
 
 public:
-    QuattroStagioni(const  std::string& leguma1="Ciuperci",const  std::string& leguma2="Sunca",const  std::string& leguma3 ="Masline",const std::string& leguma4="Ardei",const  std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella"): Pizza_Facuta(sos, cascaval), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
+    QuattroStagioni(const std::string& leguma1 = "Ciuperci", const std::string& leguma2 = "Sunca", const std::string& leguma3 = "Masline", const std::string& leguma4 = "Ardei",
+                    const std::string& sos = "Sos de rosii", const std::string& cascaval = "Mozzarella", const double diametru=25.0)
+        : Pizza_Facuta(sos, cascaval, diametru), Leguma1(leguma1), Leguma2(leguma2), Leguma3(leguma3), Leguma4(leguma4) {}
 
-    //std::string get_Leguma1(){return Leguma1;}
-    //std::string get_Leguma2(){return Leguma2;}
-    //std::string get_Leguma3(){return Leguma3;}
-    //std::string get_Leguma4(){return Leguma4;}
     void afiseazaPizza() const override
     {
-        std::cout << "Pizza Quattro Stagioni \n";
-        std::cout << "Ingrediente: Mozzarela, Sos de rosii, Ciuperci, Sunca, Masline, Ardei\n";
-        std::cout << "Pret: 30.0\n";
+        std::cout << "Pizza Quattro Stagioni\n";
+        std::cout << "Ingrediente: Mozzarela, " << Sos << ", " << Cascaval << ", "
+                  << Leguma1 << ", " << Leguma2 << ", " << Leguma3 << ", " << Leguma4 << "\n";
+        std::cout <<"Diametru:" << Diametru<< " cm\n";
+        std::cout << "Pret: " << calculeazaPret() << "\n";
+    }
+
+    double calculeazaPret() const override
+    {
+        double basePrice = (20.0*Diametru)/10;
+        double extraIngredientsPrice = 2.0;
+        return basePrice + extraIngredientsPrice * 4;
     }
 };
 
-class Hawaii: public Pizza_Facuta
+class Hawaii : public Pizza_Facuta
 {
     std::string Salam;
     std::string Leguma;
 
 public:
+    Hawaii(const std::string& salam = "Sunca", const std::string& leguma = "Ananas", const std::string& sos = "Sos de rosii", const std::string& cascaval = "Mozzarella", const double diametru=20.0)
+        : Pizza_Facuta(sos, cascaval, diametru), Salam(salam), Leguma(leguma) {}
 
-    Hawaii(const std::string& salam="Sunca", const std::string& leguma="Ananas",const std::string& sos="Sos de rosii", const std::string& cascaval="Mozzarella" ) : Pizza_Facuta(sos, cascaval), Salam(salam), Leguma(leguma) {}
-    //std::string get_Salam() {return Salam;}
-    //std::string get_Leguma(){return Leguma;}
     void afiseazaPizza() const override
     {
-        std::cout << "Pizza Hawaii \n";
-        std::cout << "Ingrediente: Mozzarela, Sos de rosii, Sunca, Ananas\n";
-        std::cout << "Pret: 27.5\n";
+        std::cout << "Pizza Hawaii\n";
+        std::cout << "Ingrediente: Mozzarela, " << Sos << ", " << Cascaval << ", " << Salam << ", " << Leguma << "\n";
+        std::cout <<"Diametru:" <<Diametru<< " cm\n";
+        std::cout << "Pret: " << calculeazaPret() << "\n";
     }
 
+    double calculeazaPret() const override
+    {
+        double basePrice = (18.0*Diametru)/15;
+        double ananasPrice = (Leguma == "Ananas") ? 5.0 : 0.0;
+
+        return basePrice + ananasPrice;
+    }
 };
+
 
 class Ingredient
 {
@@ -274,11 +340,17 @@ public:
     }
 };
 
+
+
 class InventarPizza
 {
     std::map<std::string, Ingredient> Inventar;
 
 public:
+     std::map<std::string, Ingredient>& accesInventar()
+    {
+        return Inventar;
+    }
     const std::map<std::string, Ingredient>& getInventar() const
     {
         return Inventar;
@@ -289,6 +361,14 @@ public:
     }
     void adaugaIngredient(const std::string& nume, int cantitate)
     {
+        if (cautaIngredient(nume) != Inventar.end())
+        {
+            throw std::invalid_argument("Ingredientul se afla deja in inventar.");
+        }
+        if (cantitate < 0)
+        {
+            throw std::invalid_argument("Cantitatea trebuie sa fie pozitiva.");
+        }
         Inventar.emplace(nume, Ingredient(nume, cantitate));
     }
 
@@ -328,6 +408,84 @@ public:
     }
 
 };
+class Pizzerie
+{
+private:
+    InventarPizza inventar;
+
+public:
+    Pizzerie() {
+    inventar.adaugaIngredient("Ciuperci", 100);
+    inventar.adaugaIngredient("Masline", 100);
+    inventar.adaugaIngredient("Ardei", 100);
+    inventar.adaugaIngredient("Rosii", 100);
+    inventar.adaugaIngredient("Castraveti", 100);
+    inventar.adaugaIngredient("Ceapa", 100);
+    inventar.adaugaIngredient("Ananas", 100);
+
+    }
+
+    void adaugaIngredientInInventar() {
+        std::string nume;
+
+        std::cout << "Introdu numele ingredientului: ";
+        std::cin >> nume;
+
+        auto it = inventar.cautaIngredient(nume);
+
+        if (it == inventar.getInventar().end())
+        {
+            int cantitate;
+            std::cout << "Introdu cantitatea disponibila: ";
+            std::cin >> cantitate;
+
+            if (cantitate < 0)
+            {
+                throw CantitateNegativaException();
+            }
+
+            inventar.adaugaIngredient(nume, cantitate);
+            std::cout << "Ingredient adaugat cu succes!\n";
+        }
+        else
+        {
+            throw IngredientExistentException();
+        }
+    }
+
+    void actualizeazaStocIngredient() {
+        std::string nume;
+        std::cout << "Introdu numele ingredientului pentru actualizare: ";
+        std::cin >> nume;
+
+        auto it = inventar.cautaIngredient(nume);
+
+        if (it != inventar.getInventar().end())
+        {
+            int cantitate;
+            std::cout << "Introdu noua cantitate disponibila: ";
+            std::cin >> cantitate;
+
+            if (cantitate < 0)
+            {
+                throw CantitateNegativaException();
+            }
+
+            it->second.actualizeazaStoc(cantitate);
+            std::cout << "Stoc actualizat cu succes!\n";
+        }
+        else
+        {
+            std::cout << "Ingredientul nu a fost gasit in inventar.\n";
+        }
+    }
+
+
+    void afiseazaStocul() const {
+        inventar.afiseazaStocul();
+    }
+};
+
 
 std::ostream& operator<<(std::ostream& out, const Leguma& leg)
 {
@@ -372,70 +530,21 @@ std::ostream& operator<<(std::ostream& out, const Pizza_Nevegetariana& pzznv)
     return out;
 }
 
-void adaugaIngredientInInventar(InventarPizza& inventar)
-{
-    std::string nume;
-
-    std::cout << "Introdu numele ingredientului: ";
-    std::cin >> nume;
-
-    auto it = inventar.cautaIngredient(nume);
-
-    if (it == inventar.getInventar().end())
-    {   int cantitate;
-        std::cout << "Introdu cantitatea disponibila: ";
-        std::cin >> cantitate;
-
-        inventar.adaugaIngredient(nume, cantitate);
-        std::cout << "Ingredient adaugat cu succes!\n";
-    }
-    else
-    {
-        std::cout << "Ingredientul se afla deja in inventar.\n";
-    }
-}
-void actualizeazaStocIngredient(InventarPizza& inventar)
-{
-    std::string nume;
-
-    std::cout << "Introdu numele ingredientului pentru actualizare: ";
-    std::cin >> nume;
-
-    auto it = inventar.cautaIngredient(nume);
-
-    if (it != inventar.getInventar().end())
-    {   int cantitate;
-        std::cout << "Introdu noua cantitate disponibila: ";
-        std::cin >> cantitate;
-
-        it->second.actualizeazaStoc(cantitate);
-        std::cout << "Stoc actualizat cu succes!\n";
-    }
-    else
-    {
-        std::cout << "Ingredientul nu a fost gasit in inventar.\n";
-    }
-}
-
-
 
 int main()
 {
 
-    InventarPizza inventar;
-    inventar.adaugaIngredient("Ciuperci", 20);
-    inventar.adaugaIngredient("Masline", 14);
-    inventar.adaugaIngredient("Ardei", 30);
-    inventar.adaugaIngredient("Rosii", 25);
-    inventar.adaugaIngredient("Castraveti", 18);
-    inventar.adaugaIngredient("Ceapa", 22);
-    inventar.adaugaIngredient("Ananas", 12);
 
-  std::vector<Leguma> legume;
-for (const std::string lgm : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
-    int cantitate = rand() % 10;
-    legume.push_back(Leguma(lgm, cantitate));
-}
+    std::vector<Leguma> legume;
+    for (const std::string lgm :
+            {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"
+            })
+    {
+        int cantitate = rand() % 10;
+        bool isValid = Leguma::isValidQuantity(10);
+        legume.push_back(Leguma(lgm, cantitate));
+        Leguma::NumarTotalLegume++;
+    }
 
 
     /* for (const Leguma& lgm : legume) {
@@ -467,11 +576,14 @@ for (const std::string lgm : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castrave
     //std::cout<<"Felii: "<<pizza1.get_Felii() <<std::endl;
 
 
-   std::vector<Leguma> legume_pnv;
-for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"}) {
-    int cantitate = rand() % 10;
-    legume_pnv.push_back(Leguma(lgm_pnv, cantitate));
-}
+    std::vector<Leguma> legume_pnv;
+    for (const std::string lgm_pnv :
+            {"Ciuperci", "Masline", "Ardei", "Rosii", "Castraveti", "Ceapa"
+            })
+    {
+        int cantitate = rand() % 10;
+        legume_pnv.push_back(Leguma(lgm_pnv, cantitate));
+    }
 
 
     /*for (const Leguma& lgm : legume) {
@@ -490,142 +602,164 @@ for (const std::string lgm_pnv : {"Ciuperci", "Masline", "Ardei", "Rosii", "Cast
     //std::cout<<"Felii: "<<pizza2.get_Felii() <<std::endl;
 
 
+    Leguma::afiseazaInfoStatic();
+    std::cout << "Numarul total de legume: " << Leguma::NumarTotalLegume << std::endl;
 
     int optiune=-1;
+    Pizzerie pizzerie;
+    InventarPizza inventar;
 
     do
     {
-        std::cout << "---------------------------\n";
-        std::cout << "1. Adauga ingredient in inventar\n";
-        std::cout << "2. Actualizeaza stocul pentru un ingredient\n";
-        std::cout << "3. Comanda pizza facuta\n";
-        std::cout << "4. Creeaza o pizza.\n";
-        std::cout << "5. Afiseaza stocul.\n";
-        std::cout << "0. Iesire\n";
-        std::cout << "---------------------------\n";
-        std::cout << "Alege o optiune: ";
-        std::cin >> optiune;
-
-
-        switch (optiune)
+        try
         {
-        case 1:
-            adaugaIngredientInInventar(inventar);
-            break;
-        case 2:
-            actualizeazaStocIngredient(inventar);
-            break;
-        case 3:
-        {
-            int optiunePizza;
             std::cout << "---------------------------\n";
-            std::cout << "Alege tipul de pizza:\n";
-            std::cout << "1. Margherita\n";
-            std::cout << "2. Quattro Stagioni\n";
-            std::cout << "3. Hawaii\n";
-            std::cout << "0. Inapoi la meniu\n";
+            std::cout << "1. Adauga ingredient in inventar\n";
+            std::cout << "2. Actualizeaza stocul pentru un ingredient\n";
+            std::cout << "3. Comanda pizza facuta\n";
+            std::cout << "4. Creeaza o pizza.\n";
+            std::cout << "5. Afiseaza stocul.\n";
+            std::cout << "0. Iesire\n";
             std::cout << "---------------------------\n";
-            std::cout << "Alege o opțiune: ";
-            std::cin >> optiunePizza;
+            std::cout << "Alege o optiune: ";
+            std::cin >> optiune;
 
-            switch (optiunePizza)
+
+            switch (optiune)
             {
             case 1:
-            {
-                Pizza_Facuta* optiunea1 = new Margherita();
-                optiunea1->afiseazaPizza();
-                delete optiunea1;
+               pizzerie.adaugaIngredientInInventar();
                 break;
-            }
             case 2:
-            {
-                Pizza_Facuta* optiunea2 = new QuattroStagioni();
-                optiunea2->afiseazaPizza();
-                delete optiunea2;
+                 pizzerie.actualizeazaStocIngredient();
                 break;
-            }
             case 3:
             {
-                Pizza_Facuta* optiunea3 = new Hawaii();
-                optiunea3->afiseazaPizza();
-                delete optiunea3;
+                int optiunePizza;
+                std::cout << "---------------------------\n";
+                std::cout << "Alege tipul de pizza:\n";
+                std::cout << "1. Margherita\n";
+                std::cout << "2. Quattro Stagioni\n";
+                std::cout << "3. Hawaii\n";
+                std::cout << "0. Inapoi la meniu\n";
+                std::cout << "---------------------------\n";
+                std::cout << "Alege o optiune: ";
+                std::cin >> optiunePizza;
+
+                switch (optiunePizza)
+                {
+                case 1:
+                {
+                    auto optiunea1 = std::make_unique<Margherita>();
+                    std::cout << "Detalii despre pizza Margherita:\n";
+                    optiunea1->afiseazaPizza();
+                    optiunea1.reset();
+                    break;
+                }
+                case 2:
+                {
+                    auto optiunea2 = std::make_unique<QuattroStagioni>();
+                    std::cout << "Detalii despre pizza QuattroStagioni:\n";
+                    optiunea2->afiseazaPizza();
+                    optiunea2.reset();
+                    break;
+                }
+                case 3:
+                {
+                    auto optiunea3 = std::make_unique<Hawaii>();
+                    std::cout << "Detalii despre pizza Hawaii:\n";
+                    optiunea3->afiseazaPizza();
+                    optiunea3.reset();
+                    break;
+                }
+
+                case 0:
+                {
+                    std::cout << "Inapoi la meniu.\n";
+                    break;
+                }
+                default:
+                {
+                    std::cout << "Optiune invalida. Incearcă din nou.\n";
+                }
+                }
                 break;
             }
+            break;
 
+
+
+            case 4:
+            {
+                if (inventar.areSuficienteIngrediente(legume))
+                {
+                    std::cout << "Avem suficiente ingrediente pentru pizza!\n";
+                }
+                else
+                {
+                    std::cout << "Nu avem suficiente ingrediente pentru pizza!\n";
+                    inventar.afiseazaStocul();
+                    return 1;
+                }
+                std::cout<<"Pizza1"<<std::endl;
+                std::cout<<pizza1;
+                double calorii1=pizza1.calculeazaCalorii();
+                std::cout<<"Calorii: "<<calorii1<<std::endl;
+                double price1=pizza1.calculatePrice();
+                std::cout<<"Pret: "<< price1 <<std::endl;
+                double time1=pizza1.calculateBakingTime();
+                std::cout<<"Timp: "<< time1 <<std::endl;
+                inventar.actualizeazaStocul(legume);
+                inventar.afiseazaStocul();
+                auto& inventarMap = inventar.getInventar();
+                (void)inventarMap;
+                std::cout<<"-------------------------------------------------------------"<<std::endl;
+                if (inventar.areSuficienteIngrediente(legume_pnv))
+                {
+                    std::cout << "Avem suficiente ingrediente pentru pizza!\n";
+                }
+                else
+                {
+                    std::cout << "Nu avem suficiente ingrediente pentru pizza!\n";
+                    inventar.afiseazaStocul();
+                    return 1;
+                }
+                std::cout<<"Pizza2(nevegetariana)"<<std::endl;
+                std::cout<<pizza2;
+                double calorii2=pizza2.calculeazaCalorii();
+                std::cout<<"Calorii: "<<calorii2<<std::endl;
+                double price2=pizza2.calculatePrice();
+                std::cout<<"Pret: "<< price2 <<std::endl;
+                double time2=pizza2.calculateBakingTime();
+                std::cout<<"Timp: "<< time2 <<std::endl;
+                inventar.actualizeazaStocul(legume_pnv);
+                inventar.afiseazaStocul();
+                break;
+
+            }
+            case 5:
+                pizzerie.afiseazaStocul();
+                break;
             case 0:
-            {
-                std::cout << "Înapoi la meniu.\n";
+                std::cout << "Programul se inchide.\n";
                 break;
-            }
             default:
-            {
-                std::cout << "Opțiune invalidă. Încearcă din nou.\n";
+                std::cout << "Opțiune invalida. Incearca din nou.\n";
             }
-            }
-            break;
+
         }
-        break;
-
-
-
-        case 4:
+        catch (const CantitateNegativaException& ex)
         {
-            if (inventar.areSuficienteIngrediente(legume))
-            {
-                std::cout << "Avem suficiente ingrediente pentru pizza!\n";
-            }
-            else
-            {
-                std::cout << "Nu avem suficiente ingrediente pentru pizza!\n";
-                inventar.afiseazaStocul();
-                return 1;
-            }
-            std::cout<<"Pizza1"<<std::endl;
-            std::cout<<pizza1;
-            double calorii1=pizza1.calculeazaCalorii();
-            std::cout<<"Calorii: "<<calorii1<<std::endl;
-            double price1=pizza1.calculatePrice();
-            std::cout<<"Pret: "<< price1 <<std::endl;
-            double time1=pizza1.calculateBakingTime();
-            std::cout<<"Timp: "<< time1 <<std::endl;
-            inventar.actualizeazaStocul(legume);
-            inventar.afiseazaStocul();
-            auto& inventarMap = inventar.getInventar();
-            (void)inventarMap;
-            std::cout<<"-------------------------------------------------------------"<<std::endl;
-            if (inventar.areSuficienteIngrediente(legume_pnv))
-            {
-                std::cout << "Avem suficiente ingrediente pentru pizza!\n";
-            }
-            else
-            {
-                std::cout << "Nu avem suficiente ingrediente pentru pizza!\n";
-                inventar.afiseazaStocul();
-                return 1;
-            }
-            std::cout<<"Pizza2(nevegetariana)"<<std::endl;
-            std::cout<<pizza2;
-            double calorii2=pizza2.calculeazaCalorii();
-            std::cout<<"Calorii: "<<calorii2<<std::endl;
-            double price2=pizza2.calculatePrice();
-            std::cout<<"Pret: "<< price2 <<std::endl;
-            double time2=pizza2.calculateBakingTime();
-            std::cout<<"Timp: "<< time2 <<std::endl;
-            inventar.actualizeazaStocul(legume_pnv);
-            inventar.afiseazaStocul();
-            break;
-
+            std::cerr << "Eroare: " << ex.what() << std::endl;
         }
-         case 5: 
-              inventar.afiseazaStocul();
-            break;
-        case 0:
-            std::cout << "Programul se inchide.\n";
-            break;
-        default:
-            std::cout << "Opțiune invalida. Incearca din nou.\n";
+        catch (const IngredientExistentException& ex)
+        {
+            std::cerr << "Eroare: " << ex.what() << std::endl;
         }
-
+        catch (const std::exception& ex)
+        {
+            std::cerr << "Eroare necunoscuta: " << ex.what() << std::endl;
+        }
     }
     while (optiune != 0);
 
