@@ -575,16 +575,15 @@ void adaugaIngredientInInventar(InventarPizza& inventar)
 
     if (it == inventar.getInventar().end())
     {
-        int cantitate1;
         std::cout << "Introdu cantitatea disponibila: ";
-        std::cin >> cantitate1;
+        std::cin >> cantitate;
 
-        if (cantitate1 < 0)
+        if (cantitate < 0)
         {
             throw CantitateNegativaException();
         }
 
-        inventar.adaugaIngredient(nume, cantitate1);
+        inventar.adaugaIngredient(nume, cantitate);
         std::cout << "Ingredient adaugat cu succes!\n";
     }
     else
@@ -604,16 +603,15 @@ void actualizeazaStocIngredient(InventarPizza& inventar)
 
     if (it != inventar.getInventar().end())
     {
-        int cantitate1;
         std::cout << "Introdu noua cantitate disponibila: ";
-        std::cin >> cantitate1;
+        std::cin >> cantitate;
 
-        if (cantitate1 < 0)
+        if (cantitate < 0)
         {
             throw CantitateNegativaException();
         }
 
-        it->second.actualizeazaStoc(cantitate1);
+        it->second.actualizeazaStoc(cantitate);
         std::cout << "Stoc actualizat cu succes!\n";
     }
     else
