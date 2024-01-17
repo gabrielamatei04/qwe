@@ -864,7 +864,7 @@ int main()
                 std::cout<<"Timp: "<< time1 <<std::endl;
                 inventar.actualizeazaStocul(legume);
                 inventar.afiseazaStocul();
-                auto& inventarMap = inventar.getInventar();
+                //auto& inventarMap = inventar.getInventar();
                 std::cout<<"-------------------------------------------------------------"<<std::endl;
                 if (inventar.areSuficienteIngrediente(legume_pnv))
                 {
